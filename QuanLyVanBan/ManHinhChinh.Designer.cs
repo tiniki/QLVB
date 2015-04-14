@@ -276,6 +276,7 @@
 			this.suatoolStripButton1.Size = new System.Drawing.Size(70, 70);
 			this.suatoolStripButton1.Text = "Sửa";
 			this.suatoolStripButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.suatoolStripButton1.Click += new System.EventHandler(this.suatoolStripButton1_Click);
 			// 
 			// xoatoolStripButton
 			// 
@@ -364,24 +365,36 @@
 			// 
 			this.splitContainer2.Panel2.Controls.Add(this.vBDendataGridView);
 			this.splitContainer2.Size = new System.Drawing.Size(703, 215);
-			this.splitContainer2.SplitterDistance = 234;
+			this.splitContainer2.SplitterDistance = 100;
 			this.splitContainer2.TabIndex = 2;
 			// 
 			// vbDentreeView
 			// 
 			this.vbDentreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.vbDentreeView.FullRowSelect = true;
+			this.vbDentreeView.HideSelection = false;
 			this.vbDentreeView.Location = new System.Drawing.Point(0, 0);
 			this.vbDentreeView.Name = "vbDentreeView";
-			this.vbDentreeView.Size = new System.Drawing.Size(234, 215);
+			this.vbDentreeView.Size = new System.Drawing.Size(100, 215);
 			this.vbDentreeView.TabIndex = 0;
+			this.vbDentreeView.Tag = "vbden";
+			this.vbDentreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.vbDentreeView_AfterSelect);
 			// 
 			// vBDendataGridView
 			// 
+			this.vBDendataGridView.AllowUserToAddRows = false;
+			this.vBDendataGridView.AllowUserToDeleteRows = false;
+			this.vBDendataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
 			this.vBDendataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.vBDendataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.vBDendataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
 			this.vBDendataGridView.Location = new System.Drawing.Point(0, 0);
 			this.vBDendataGridView.Name = "vBDendataGridView";
-			this.vBDendataGridView.Size = new System.Drawing.Size(465, 215);
+			this.vBDendataGridView.ReadOnly = true;
+			this.vBDendataGridView.RowHeadersVisible = false;
+			this.vBDendataGridView.RowHeadersWidth = 20;
+			this.vBDendataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+			this.vBDendataGridView.Size = new System.Drawing.Size(599, 215);
 			this.vBDendataGridView.TabIndex = 1;
 			// 
 			// vBDitabPage
@@ -409,7 +422,7 @@
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.vBDidataGridView);
 			this.splitContainer1.Size = new System.Drawing.Size(703, 215);
-			this.splitContainer1.SplitterDistance = 234;
+			this.splitContainer1.SplitterDistance = 100;
 			this.splitContainer1.TabIndex = 2;
 			// 
 			// vBDitreeView
@@ -417,16 +430,24 @@
 			this.vBDitreeView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.vBDitreeView.Location = new System.Drawing.Point(0, 0);
 			this.vBDitreeView.Name = "vBDitreeView";
-			this.vBDitreeView.Size = new System.Drawing.Size(234, 215);
+			this.vBDitreeView.Size = new System.Drawing.Size(100, 215);
 			this.vBDitreeView.TabIndex = 0;
+			this.vBDitreeView.Tag = "vbdi";
+			this.vBDitreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.vBDitreeView_AfterSelect);
 			// 
 			// vBDidataGridView
 			// 
+			this.vBDidataGridView.AllowUserToAddRows = false;
+			this.vBDidataGridView.AllowUserToDeleteRows = false;
+			this.vBDidataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
 			this.vBDidataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.vBDidataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.vBDidataGridView.Location = new System.Drawing.Point(0, 0);
 			this.vBDidataGridView.Name = "vBDidataGridView";
-			this.vBDidataGridView.Size = new System.Drawing.Size(465, 215);
+			this.vBDidataGridView.ReadOnly = true;
+			this.vBDidataGridView.RowHeadersVisible = false;
+			this.vBDidataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+			this.vBDidataGridView.Size = new System.Drawing.Size(599, 215);
 			this.vBDidataGridView.TabIndex = 1;
 			// 
 			// kQTKtabPage
@@ -442,10 +463,16 @@
 			// 
 			// kQTKdataGridView
 			// 
+			this.kQTKdataGridView.AllowUserToAddRows = false;
+			this.kQTKdataGridView.AllowUserToDeleteRows = false;
+			this.kQTKdataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader;
 			this.kQTKdataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.kQTKdataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.kQTKdataGridView.Location = new System.Drawing.Point(3, 3);
 			this.kQTKdataGridView.Name = "kQTKdataGridView";
+			this.kQTKdataGridView.ReadOnly = true;
+			this.kQTKdataGridView.RowHeadersVisible = false;
+			this.kQTKdataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.kQTKdataGridView.Size = new System.Drawing.Size(703, 215);
 			this.kQTKdataGridView.TabIndex = 0;
 			// 

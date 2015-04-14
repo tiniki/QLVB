@@ -267,15 +267,16 @@
 			// 
 			// tbTep
 			// 
-			this.tbTep.Enabled = false;
 			this.tbTep.Location = new System.Drawing.Point(95, 287);
 			this.tbTep.Name = "tbTep";
+			this.tbTep.ReadOnly = true;
 			this.tbTep.Size = new System.Drawing.Size(228, 20);
 			this.tbTep.TabIndex = 24;
 			// 
 			// openFileDialog1
 			// 
 			this.openFileDialog1.FileName = "openFileDialog1";
+			this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
 			// 
 			// btChon
 			// 
@@ -285,6 +286,7 @@
 			this.btChon.TabIndex = 25;
 			this.btChon.Text = "Chọn...";
 			this.btChon.UseVisualStyleBackColor = true;
+			this.btChon.Click += new System.EventHandler(this.btChon_Click);
 			// 
 			// tbGhiChu
 			// 
@@ -303,6 +305,7 @@
 			this.btThem.TabIndex = 27;
 			this.btThem.Text = "Thêm";
 			this.btThem.UseVisualStyleBackColor = true;
+			this.btThem.Click += new System.EventHandler(this.btThem_Click);
 			// 
 			// btHuy
 			// 
@@ -312,6 +315,7 @@
 			this.btHuy.TabIndex = 28;
 			this.btHuy.Text = "Hủy";
 			this.btHuy.UseVisualStyleBackColor = true;
+			this.btHuy.Click += new System.EventHandler(this.btHuy_Click);
 			// 
 			// VBDi
 			// 

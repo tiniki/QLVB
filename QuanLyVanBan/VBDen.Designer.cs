@@ -264,9 +264,9 @@
 			// 
 			// tbTep
 			// 
-			this.tbTep.Enabled = false;
 			this.tbTep.Location = new System.Drawing.Point(94, 257);
 			this.tbTep.Name = "tbTep";
+			this.tbTep.ReadOnly = true;
 			this.tbTep.Size = new System.Drawing.Size(228, 20);
 			this.tbTep.TabIndex = 24;
 			// 

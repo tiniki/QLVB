@@ -60,6 +60,7 @@
 			this.textBox1.PasswordChar = '*';
 			this.textBox1.Size = new System.Drawing.Size(139, 20);
 			this.textBox1.TabIndex = 2;
+			this.textBox1.Text = "123456";
 			// 
 			// button1
 			// 

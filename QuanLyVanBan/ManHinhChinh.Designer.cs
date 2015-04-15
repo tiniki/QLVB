@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.quanLyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.xemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -67,6 +68,14 @@
 			this.kQTKtabPage = new System.Windows.Forms.TabPage();
 			this.kQTKdataGridView = new System.Windows.Forms.DataGridView();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+			this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.xemToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+			this.sửaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.xóaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.thêmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+			this.mởTệpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
@@ -84,6 +93,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.vBDidataGridView)).BeginInit();
 			this.kQTKtabPage.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.kQTKdataGridView)).BeginInit();
+			this.contextMenuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// menuStrip1
@@ -117,15 +127,17 @@
 			// 
 			this.xemToolStripMenuItem.Image = global::QuanLyVanBan.Properties.Resources.eye;
 			this.xemToolStripMenuItem.Name = "xemToolStripMenuItem";
-			this.xemToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+			this.xemToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.xemToolStripMenuItem.Text = "Xem";
+			this.xemToolStripMenuItem.Click += new System.EventHandler(this.xemtoolStripButton_Click);
 			// 
 			// timKiemToolStripMenuItem
 			// 
 			this.timKiemToolStripMenuItem.Image = global::QuanLyVanBan.Properties.Resources.search;
 			this.timKiemToolStripMenuItem.Name = "timKiemToolStripMenuItem";
-			this.timKiemToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+			this.timKiemToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.timKiemToolStripMenuItem.Text = "Tìm Kiếm";
+			this.timKiemToolStripMenuItem.Click += new System.EventHandler(this.timKiemtoolStripButton_Click);
 			// 
 			// toolStripSeparator1
 			// 
@@ -136,22 +148,25 @@
 			// 
 			this.themToolStripMenuItem.Image = global::QuanLyVanBan.Properties.Resources.add;
 			this.themToolStripMenuItem.Name = "themToolStripMenuItem";
-			this.themToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+			this.themToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.themToolStripMenuItem.Text = "Thêm";
+			this.themToolStripMenuItem.Click += new System.EventHandler(this.themtoolStripButton_Click);
 			// 
 			// suaToolStripMenuItem
 			// 
 			this.suaToolStripMenuItem.Image = global::QuanLyVanBan.Properties.Resources.edit;
 			this.suaToolStripMenuItem.Name = "suaToolStripMenuItem";
-			this.suaToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+			this.suaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.suaToolStripMenuItem.Text = "Sửa";
+			this.suaToolStripMenuItem.Click += new System.EventHandler(this.suatoolStripButton1_Click);
 			// 
 			// xoaToolStripMenuItem
 			// 
 			this.xoaToolStripMenuItem.Image = global::QuanLyVanBan.Properties.Resources.delete;
 			this.xoaToolStripMenuItem.Name = "xoaToolStripMenuItem";
-			this.xoaToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+			this.xoaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.xoaToolStripMenuItem.Text = "Xóa";
+			this.xoaToolStripMenuItem.Click += new System.EventHandler(this.xoatoolStripButton_Click);
 			// 
 			// toolStripSeparator2
 			// 
@@ -237,6 +252,7 @@
 			this.xemtoolStripButton.Size = new System.Drawing.Size(70, 70);
 			this.xemtoolStripButton.Text = "Xem";
 			this.xemtoolStripButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.xemtoolStripButton.Click += new System.EventHandler(this.xemtoolStripButton_Click);
 			// 
 			// timKiemtoolStripButton
 			// 
@@ -248,6 +264,7 @@
 			this.timKiemtoolStripButton.Size = new System.Drawing.Size(70, 70);
 			this.timKiemtoolStripButton.Text = "Tìm Kiếm";
 			this.timKiemtoolStripButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.timKiemtoolStripButton.Click += new System.EventHandler(this.timKiemtoolStripButton_Click);
 			// 
 			// toolStripSeparator3
 			// 
@@ -288,6 +305,7 @@
 			this.xoatoolStripButton.Size = new System.Drawing.Size(70, 70);
 			this.xoatoolStripButton.Text = "Xóa";
 			this.xoatoolStripButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.xoatoolStripButton.Click += new System.EventHandler(this.xoatoolStripButton_Click);
 			// 
 			// toolStripSeparator4
 			// 
@@ -339,6 +357,7 @@
 			this.tabControl1.SelectedIndex = 0;
 			this.tabControl1.Size = new System.Drawing.Size(717, 247);
 			this.tabControl1.TabIndex = 2;
+			this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
 			// 
 			// vBDebtabPage
 			// 
@@ -396,6 +415,8 @@
 			this.vBDendataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.vBDendataGridView.Size = new System.Drawing.Size(599, 215);
 			this.vBDendataGridView.TabIndex = 1;
+			this.vBDendataGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.vBDendataGridView_CellDoubleClick);
+			this.vBDendataGridView.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.vBDendataGridView_CellMouseClick);
 			// 
 			// vBDitabPage
 			// 
@@ -449,6 +470,8 @@
 			this.vBDidataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.vBDidataGridView.Size = new System.Drawing.Size(599, 215);
 			this.vBDidataGridView.TabIndex = 1;
+			this.vBDidataGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.vBDidataGridView_CellDoubleClick);
+			this.vBDidataGridView.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.vBDidataGridView_CellMouseClick);
 			// 
 			// kQTKtabPage
 			// 
@@ -465,7 +488,7 @@
 			// 
 			this.kQTKdataGridView.AllowUserToAddRows = false;
 			this.kQTKdataGridView.AllowUserToDeleteRows = false;
-			this.kQTKdataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader;
+			this.kQTKdataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
 			this.kQTKdataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.kQTKdataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.kQTKdataGridView.Location = new System.Drawing.Point(3, 3);
@@ -475,6 +498,8 @@
 			this.kQTKdataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.kQTKdataGridView.Size = new System.Drawing.Size(703, 215);
 			this.kQTKdataGridView.TabIndex = 0;
+			this.kQTKdataGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.kQTKdataGridView_CellDoubleClick);
+			this.kQTKdataGridView.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.kQTKdataGridView_CellMouseClick);
 			// 
 			// statusStrip1
 			// 
@@ -483,6 +508,64 @@
 			this.statusStrip1.Size = new System.Drawing.Size(717, 22);
 			this.statusStrip1.TabIndex = 2;
 			this.statusStrip1.Text = "statusStrip1";
+			// 
+			// contextMenuStrip1
+			// 
+			this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.xemToolStripMenuItem1,
+            this.toolStripSeparator5,
+            this.sửaToolStripMenuItem,
+            this.xóaToolStripMenuItem,
+            this.thêmToolStripMenuItem,
+            this.toolStripSeparator6,
+            this.mởTệpToolStripMenuItem});
+			this.contextMenuStrip1.Name = "contextMenuStrip1";
+			this.contextMenuStrip1.Size = new System.Drawing.Size(113, 126);
+			// 
+			// xemToolStripMenuItem1
+			// 
+			this.xemToolStripMenuItem1.Name = "xemToolStripMenuItem1";
+			this.xemToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+			this.xemToolStripMenuItem1.Text = "Xem";
+			this.xemToolStripMenuItem1.Click += new System.EventHandler(this.xemtoolStripButton_Click);
+			// 
+			// toolStripSeparator5
+			// 
+			this.toolStripSeparator5.Name = "toolStripSeparator5";
+			this.toolStripSeparator5.Size = new System.Drawing.Size(149, 6);
+			// 
+			// sửaToolStripMenuItem
+			// 
+			this.sửaToolStripMenuItem.Name = "sửaToolStripMenuItem";
+			this.sửaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.sửaToolStripMenuItem.Text = "Sửa";
+			this.sửaToolStripMenuItem.Click += new System.EventHandler(this.suatoolStripButton1_Click);
+			// 
+			// xóaToolStripMenuItem
+			// 
+			this.xóaToolStripMenuItem.Name = "xóaToolStripMenuItem";
+			this.xóaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.xóaToolStripMenuItem.Text = "Xóa";
+			this.xóaToolStripMenuItem.Click += new System.EventHandler(this.xoatoolStripButton_Click);
+			// 
+			// thêmToolStripMenuItem
+			// 
+			this.thêmToolStripMenuItem.Name = "thêmToolStripMenuItem";
+			this.thêmToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.thêmToolStripMenuItem.Text = "Thêm";
+			this.thêmToolStripMenuItem.Click += new System.EventHandler(this.themtoolStripButton_Click);
+			// 
+			// toolStripSeparator6
+			// 
+			this.toolStripSeparator6.Name = "toolStripSeparator6";
+			this.toolStripSeparator6.Size = new System.Drawing.Size(149, 6);
+			// 
+			// mởTệpToolStripMenuItem
+			// 
+			this.mởTệpToolStripMenuItem.Name = "mởTệpToolStripMenuItem";
+			this.mởTệpToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.mởTệpToolStripMenuItem.Text = "Mở tệp";
+			this.mởTệpToolStripMenuItem.Click += new System.EventHandler(this.mởTệpToolStripMenuItem_Click);
 			// 
 			// ManHinhChinh
 			// 
@@ -515,6 +598,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.vBDidataGridView)).EndInit();
 			this.kQTKtabPage.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.kQTKdataGridView)).EndInit();
+			this.contextMenuStrip1.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -557,10 +641,18 @@
 		private System.Windows.Forms.DataGridView vBDidataGridView;
 		private System.Windows.Forms.TreeView vBDitreeView;
 		private System.Windows.Forms.TabPage kQTKtabPage;
-		private System.Windows.Forms.DataGridView kQTKdataGridView;
 		private System.Windows.Forms.StatusStrip statusStrip1;
 		private System.Windows.Forms.SplitContainer splitContainer1;
 		private System.Windows.Forms.SplitContainer splitContainer2;
+		internal System.Windows.Forms.DataGridView kQTKdataGridView;
+		private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+		private System.Windows.Forms.ToolStripMenuItem xemToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+		private System.Windows.Forms.ToolStripMenuItem sửaToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem xóaToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem thêmToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+		private System.Windows.Forms.ToolStripMenuItem mởTệpToolStripMenuItem;
 	}
 }
 

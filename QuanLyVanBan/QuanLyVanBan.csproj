@@ -48,6 +48,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChiTietVBDi.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChiTietVBDi.Designer.cs">
+      <DependentUpon>ChiTietVBDi.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChiTietVBDen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChiTietVBDen.Designer.cs">
+      <DependentUpon>ChiTietVBDen.cs</DependentUpon>
+    </Compile>
     <Compile Include="Class\BaoMat.cs" />
     <Compile Include="Class\Database.cs" />
     <Compile Include="Class\QuanLyTep.cs" />
@@ -64,6 +76,12 @@
     </Compile>
     <Compile Include="ThayDoiMatKhau.Designer.cs">
       <DependentUpon>ThayDoiMatKhau.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TimKiem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimKiem.Designer.cs">
+      <DependentUpon>TimKiem.cs</DependentUpon>
     </Compile>
     <Compile Include="VBDi.cs">
       <SubType>Form</SubType>
@@ -83,6 +101,12 @@
     <Compile Include="XacThuc.Designer.cs">
       <DependentUpon>XacThuc.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="ChiTietVBDi.resx">
+      <DependentUpon>ChiTietVBDi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChiTietVBDen.resx">
+      <DependentUpon>ChiTietVBDen.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ManHinhChinh.resx">
       <DependentUpon>ManHinhChinh.cs</DependentUpon>
     </EmbeddedResource>
@@ -98,6 +122,9 @@
     </Compile>
     <EmbeddedResource Include="ThayDoiMatKhau.resx">
       <DependentUpon>ThayDoiMatKhau.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimKiem.resx">
+      <DependentUpon>TimKiem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="VBDi.resx">
       <DependentUpon>VBDi.cs</DependentUpon>

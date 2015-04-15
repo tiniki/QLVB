@@ -13,51 +13,33 @@ namespace QuanLyVanBan
 	public partial class VBDen : Form
 	{
 		bool isEdit;
-		string soHieu;
-		public VBDen(bool Edit,string sHieu)
+		DataGridViewCellCollection row;
+		public VBDen(bool Edit,DataGridViewCellCollection row)
 		{
 
 			InitializeComponent();
 			cbbLoai.Items.AddRange(ManHinhChinh.loaiVB);
 			cbbLoai.SelectedIndex = 0;
 			isEdit = Edit;
-			soHieu = sHieu;
+			this.row = row;
 			if (Edit)
 			{
 				btThem.Text = "Sửa";
 				tbSoHieu.Enabled = false;
 				btChon.Enabled = false;
-				Class.Database db = new Class.Database();
-				if (!db.connect())
-				{
-					MessageBox.Show(this, "Kết nối cơ sở dữ liệu lỗi", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-					return;
-				}
-				var cmd = new MySqlCommand("SELECT * FROM vbden where SoHieu='" + soHieu + "';", db.getConnection());
-				MySqlDataReader reader = cmd.ExecuteReader();
-				if (reader.Read())
-				{
-					tbTenVB.Text = reader.GetString("Ten");
-					cbbLoai.SelectedItem = reader.GetString("Loai");
-					dtpkNgayThang.Value = reader.GetDateTime("Ngay");
-					tbSoHieu.Text = reader.GetString("SoHieu");
-					tbTacGia.Text = reader.GetString("TacGia");
-					nmrSoTrang.Value = reader.GetInt32("SoTrang");
-					nmrSoBan.Value = reader.GetInt32("SoBan");
-					tbChuyenChoAi.Text = reader.GetString("ChuyenChoAi");
-					tbLuuHS.Text = reader.GetString("LuuHoSo");
-					nmrSoHop.Value = reader.GetInt32("SoHop");
-					tbGhiChu.Text = reader.GetString("GhiChu");
-					tbTep.Text = reader.GetString("Tep");
-					reader.Close();
-				}
-				else
-				{
-					MessageBox.Show(this, "Kết nối cơ sở dữ liệu lỗi", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-				}
-				db.close();
-			}
-			
+				tbSoHieu.Text = row[0].Value.ToString();
+				tbTenVB.Text = row[1].Value.ToString();
+				cbbLoai.SelectedItem = row[2].Value.ToString();
+				dtpkNgayThang.Value = (DateTime)row[3].Value;
+				tbTacGia.Text = row[4].Value.ToString();
+				nmrSoTrang.Value = (int)row[5].Value;
+				nmrSoBan.Value = (int)row[6].Value;
+				tbChuyenChoAi.Text = row[7].Value.ToString();
+				tbLuuHS.Text = row[8].Value.ToString();
+				nmrSoHop.Value = (int)row[9].Value;
+				tbTep.Text = row[10].Value.ToString();
+				tbGhiChu.Text = row[11].Value.ToString();				
+			}		
 		}
 
 		private void btHuy_Click(object sender, EventArgs e)
@@ -81,7 +63,7 @@ namespace QuanLyVanBan
 					MessageBox.Show(this, "Kết nối cơ sở dữ liệu lỗi", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
 					return;
 				}
-				Class.QuanLyTep qltep = new Class.QuanLyTep(1, dtpkNgayThang.Value, tbTep.Text);
+				
 				
 				if (!isEdit)
 				{
@@ -95,56 +77,58 @@ namespace QuanLyVanBan
 						db.close();
 						return;
 					}
-					int ktfile = qltep.kiemtra();
-					if (ktfile != 0)
-					{
-						if (ktfile == 2)
-						{
-							MessageBox.Show(this, "Không thể tạo thư mục", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-							db.close();
-							return;
-						}
-						if (ktfile == 3)
-						{
-							MessageBox.Show(this, "Tệp không tồn tại", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-							db.close();
-							return;
-						}
-						if (ktfile == 4)
-						{
-							MessageBox.Show(this, "Không thể truy xuất đến tệp", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-							db.close();
-							return;
-						}
-
-						if (ktfile == 10)
-						{
-							var dialog = MessageBox.Show("Tệp đã tồn tại. Bạn có muốn copy đè lên không?", "Xác nhận", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3);
-							if (dialog == DialogResult.Yes)
-							{
-								qltep.setOverwriten(true);
-							}
-							else if (dialog == DialogResult.No)
-							{
-								qltep.setOverwriten(false);
-							}
-							else
-							{
-								db.close();
-								return;
-							}
-						}
-					}
 					cmd = new MySqlCommand("insert into vbden values (@soHieu,@ten,@loai,@ngay,@tacgia,@sotrang,@soban,@chuyenChoAi,@luuHoSo,@soHop,@tep,@ghiChu);", db.getConnection());
 				}
 				else
 				{
 					
-					cmd = new MySqlCommand("UPDATE vbden SET Ten=@ten, Loai=@loai, Ngay=@ngay, TacGia=@tacGia, SoTrang=@soTrang, SoBan=@soBan, ChuyenChoAi=@chuyenChoAi, LuuHoSo=@luuHoSo, SoHop=@soHop, GhiChu=@ghiChu WHERE SoHieu=@soHieu;", db.getConnection());
+					cmd = new MySqlCommand("UPDATE vbden SET Ten=@ten, Loai=@loai, Ngay=@ngay, TacGia=@tacGia, SoTrang=@soTrang, SoBan=@soBan, ChuyenChoAi=@chuyenChoAi, LuuHoSo=@luuHoSo, SoHop=@soHop, GhiChu=@ghiChu, Tep=@tep WHERE SoHieu=@soHieu;", db.getConnection());
+				}
+
+//xu ly file
+				Class.QuanLyTep qltep = new Class.QuanLyTep(1, dtpkNgayThang.Value, tbTep.Text, tbSoHieu.Text);
+				int ktfile = qltep.kiemtra();
+				if (ktfile != 0)
+				{
+					if (ktfile == 2)
+					{
+						MessageBox.Show(this, "Không thể tạo thư mục", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+						db.close();
+						return;
+					}
+					if (ktfile == 3)
+					{
+						MessageBox.Show(this, "Tệp không tồn tại", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+						db.close();
+						return;
+					}
+					if (ktfile == 4)
+					{
+						MessageBox.Show(this, "Không thể truy xuất đến tệp", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+						db.close();
+						return;
+					}
+
+					if (ktfile == 10)
+					{
+						var dialog = MessageBox.Show("Tệp đã tồn tại. Bạn có muốn đè lên tệp củ không?", "Xác nhận", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3);
+						if (dialog == DialogResult.Yes)
+						{
+							qltep.setOverwriten(true);
+						}
+						else if (dialog == DialogResult.No)
+						{
+							qltep.setOverwriten(false);
+						}
+						else
+						{
+							db.close();
+							return;
+						}
+					}
 				}
 
 				cmd.Prepare();
-
 				cmd.Parameters.AddWithValue("@soHieu", tbSoHieu.Text);
 				cmd.Parameters.AddWithValue("@ten", tbTenVB.Text);
 				cmd.Parameters.AddWithValue("@loai", (string)cbbLoai.SelectedItem);
@@ -155,12 +139,10 @@ namespace QuanLyVanBan
 				cmd.Parameters.AddWithValue("@chuyenChoAi", tbChuyenChoAi.Text);
 				cmd.Parameters.AddWithValue("@luuHoSo", tbLuuHS.Text);
 				cmd.Parameters.AddWithValue("@soHop", nmrSoHop.Value);
-				if (!isEdit)
-					cmd.Parameters.AddWithValue("@tep", qltep.getNewPath());
+				cmd.Parameters.AddWithValue("@tep", qltep.getNewPath());
 				cmd.Parameters.AddWithValue("@ghiChu", tbGhiChu.Text);
 				if (cmd.ExecuteNonQuery() > 0)
 				{
-					if (!isEdit)
 						qltep.themTep();
 					MessageBox.Show(this, "Lưu thành công", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
 					db.close();

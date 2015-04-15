@@ -16,7 +16,7 @@ namespace QuanLyVanBan.Class
 		string newPathDirec,newPathFile;
 		bool noFile,overwriten;
 
-		public QuanLyTep(int type, DateTime date, string fileName)
+		public QuanLyTep(int type, DateTime date, string fileName,string soHieu)
 		{
 			if (fileName != "")
 			{
@@ -32,8 +32,8 @@ namespace QuanLyVanBan.Class
 				}
 				file = new FileInfo(fileName);
 				noFile = false;
-				newPathFile = newPathDirec + "\\" + file.Name;
-				overwriten = false;
+				newPathFile = newPathDirec + "\\" + soHieu + file.Extension;
+				overwriten = true;
 			}
 			else noFile = true;
 			
@@ -42,8 +42,10 @@ namespace QuanLyVanBan.Class
 		public int themTep()
 		{
 			if (noFile) return 0;//vb ko co tep kem theo		
-			if(overwriten)
-			File.Copy(file.FullName, newPathFile, overwriten);
+			if (overwriten)
+				if (file.FullName.Contains(Directory.GetCurrentDirectory()))
+					File.Move(file.FullName, newPathFile);
+				else File.Copy(file.FullName, newPathFile, overwriten);
 			return 1;//thanh cong
 		}
 		public int kiemtra()
@@ -87,7 +89,19 @@ namespace QuanLyVanBan.Class
 		public string getNewPath()
 		{
 			if (noFile) return "";
-			return newPathDirec + "\\" + file.Name;
+			return newPathFile;
+		}
+		public static int xoafile(string filePath)
+		{
+			try 
+			{ 
+				File.Delete(filePath); 
+				return 1; 
+			}
+			catch
+			{
+				return -1;
+			}
 		}
 	}
 }

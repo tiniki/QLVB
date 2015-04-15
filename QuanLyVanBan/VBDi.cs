@@ -13,49 +13,32 @@ namespace QuanLyVanBan
 	public partial class VBDi : Form
 	{
 		bool isEdit;
-		string soHieu;
-		public VBDi(bool edit,string sHieu)
+		DataGridViewCellCollection row;
+		public VBDi(bool edit, DataGridViewCellCollection row)
 		{
 			InitializeComponent();
 			cbbLoai.Items.AddRange(ManHinhChinh.loaiVB);
 			cbbLoai.SelectedIndex = 0;
 			isEdit = edit;
-			soHieu = sHieu;
+			this.row = row;
 			if (edit)
 			{
 				btThem.Text = "Sửa";
 				tbSoHieu.Enabled = false;
 				btChon.Enabled = false;
-				Class.Database db = new Class.Database();
-				if (!db.connect())
-				{
-					MessageBox.Show(this, "Kết nối cơ sở dữ liệu lỗi", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-					return;
-				}
-				var cmd = new MySqlCommand("SELECT * FROM vbdi where SoHieu='" + soHieu + "';", db.getConnection());
-				MySqlDataReader reader = cmd.ExecuteReader();
-				if (reader.Read())
-				{
-					tbTenVB.Text = reader.GetString("Ten");
-					cbbLoai.SelectedItem = reader.GetString("Loai");
-					dtpkNgayThang.Value = reader.GetDateTime("Ngay");
-					tbSoHieu.Text = reader.GetString("SoHieu");
-					tbNKBC.Text = reader.GetString("NgKyBanChinh");
-					tbNKBP.Text = reader.GetString("NgKyBanPhu");
-					nmrSoTrang.Value = reader.GetInt32("SoTrang");
-					nmrSoBan.Value = reader.GetInt32("SoBan");
-					tbNoiNhan.Text = reader.GetString("NoiNhan");
-					tbLuuHS.Text = reader.GetString("LuuHoSo");
-					nmrSoHop.Value = reader.GetInt32("SoHop");
-					tbGhiChu.Text = reader.GetString("GhiChu");
-					tbTep.Text = reader.GetString("Tep");
-					reader.Close();
-				}
-				else
-				{
-					MessageBox.Show(this, "Kết nối cơ sở dữ liệu lỗi", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-				}
-				db.close();
+				tbSoHieu.Text = row[0].Value.ToString();
+				tbTenVB.Text = row[1].Value.ToString();
+				cbbLoai.SelectedItem = row[2].Value.ToString();
+				dtpkNgayThang.Value = (DateTime)row[3].Value;
+				tbNKBC.Text = row[4].Value.ToString();
+				tbNKBP.Text = row[5].Value.ToString();
+				nmrSoTrang.Value = (int)row[6].Value;
+				nmrSoBan.Value = (int)row[7].Value;
+				tbNoiNhan.Text = row[8].Value.ToString();
+				tbLuuHS.Text = row[9].Value.ToString();
+				nmrSoHop.Value = (int)row[10].Value;
+				tbTep.Text = row[11].Value.ToString();
+				tbGhiChu.Text = row[12].Value.ToString();
 			}
 		}
 
@@ -79,7 +62,7 @@ namespace QuanLyVanBan
 					MessageBox.Show(this, "Kết nối cơ sở dữ liệu lỗi", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
 					return;
 				}
-				Class.QuanLyTep qltep = new Class.QuanLyTep(2, dtpkNgayThang.Value, tbTep.Text);
+				Class.QuanLyTep qltep = new Class.QuanLyTep(2, dtpkNgayThang.Value, tbTep.Text, tbSoHieu.Text);
 				MySqlCommand cmd;
 				if (!isEdit)
 				{
@@ -94,51 +77,54 @@ namespace QuanLyVanBan
 						return;
 					}
 
-					int ktfile = qltep.kiemtra();
-					if (ktfile != 0)
-					{
-						if (ktfile == 2)
-						{
-							MessageBox.Show(this, "Không thể tạo thư mục", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-							db.close();
-							return;
-						}
-						if (ktfile == 3)
-						{
-							MessageBox.Show(this, "Tệp không tồn tại", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-							db.close();
-							return;
-						}
-						if (ktfile == 4)
-						{
-							MessageBox.Show(this, "Không thể truy xuất đến tệp", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-							db.close();
-							return;
-						}
 
-						if (ktfile == 10)
-						{
-							var dialog = MessageBox.Show("Tệp đã tồn tại. Bạn có muốn copy đè lên không?", "Xác nhận", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3);
-							if (dialog == DialogResult.Yes)
-							{
-								qltep.setOverwriten(true);
-							}
-							else if (dialog == DialogResult.No)
-							{
-								qltep.setOverwriten(false);
-							}
-							else
-							{
-								db.close();
-								return;
-							}
-						}
-					}
 					cmd = new MySqlCommand("insert into vbdi values (@soHieu, @ten, @loai, @ngay, @ngKyBanChinh, @ngKyBanPhu, @soTrang, @soBan, @noiNhan, @luuHoSo, @soHop, @tep, @ghiChu);", db.getConnection());
 				}
 				else
 				{
-					cmd = new MySqlCommand("UPDATE vbdi SET SoHieu=@soHieu, Ten=@ten, Loai=@loai, Ngay=@ngay, NgKyBanChinh=@ngKyBanChinh, NgKyBanPhu=@ngKyBanPhu, SoTrang=@soTrang, SoBan=@soBan, NoiNhan=@noiNhan, LuuHoSo=@luuHoSo, SoHop=@soHop, GhiChu=@ghiChu WHERE SoHieu=@soHieu;", db.getConnection());
+					cmd = new MySqlCommand("UPDATE vbdi SET SoHieu=@soHieu, Ten=@ten, Loai=@loai, Ngay=@ngay, NgKyBanChinh=@ngKyBanChinh, NgKyBanPhu=@ngKyBanPhu, SoTrang=@soTrang, SoBan=@soBan, NoiNhan=@noiNhan, LuuHoSo=@luuHoSo, SoHop=@soHop, GhiChu=@ghiChu, Tep=@tep WHERE SoHieu=@soHieu;", db.getConnection());
+				}
+
+
+				int ktfile = qltep.kiemtra();
+				if (ktfile != 0)
+				{
+					if (ktfile == 2)
+					{
+						MessageBox.Show(this, "Không thể tạo thư mục", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+						db.close();
+						return;
+					}
+					if (ktfile == 3)
+					{
+						MessageBox.Show(this, "Tệp không tồn tại", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+						db.close();
+						return;
+					}
+					if (ktfile == 4)
+					{
+						MessageBox.Show(this, "Không thể truy xuất đến tệp", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+						db.close();
+						return;
+					}
+
+					if (ktfile == 10)
+					{
+						var dialog = MessageBox.Show("Tệp đã tồn tại. Bạn có muốn copy đè lên không?", "Xác nhận", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3);
+						if (dialog == DialogResult.Yes)
+						{
+							qltep.setOverwriten(true);
+						}
+						else if (dialog == DialogResult.No)
+						{
+							qltep.setOverwriten(false);
+						}
+						else
+						{
+							db.close();
+							return;
+						}
+					}
 				}
 				cmd.Prepare();
 
@@ -153,13 +139,11 @@ namespace QuanLyVanBan
 				cmd.Parameters.AddWithValue("@noiNhan", tbNoiNhan.Text);
 				cmd.Parameters.AddWithValue("@luuHoSo", tbLuuHS.Text);
 				cmd.Parameters.AddWithValue("@soHop", nmrSoHop.Value);
-				if(!isEdit)
 				cmd.Parameters.AddWithValue("@tep", qltep.getNewPath());
 				cmd.Parameters.AddWithValue("@ghiChu", tbGhiChu.Text);
 				if (cmd.ExecuteNonQuery() > 0)
 				{
-					if (!isEdit)
-						qltep.themTep();
+					qltep.themTep();
 					MessageBox.Show(this, "Lưu thành công", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
 					db.close();
 					((ManHinhChinh)Owner).vbdiDate = dtpkNgayThang.Value;

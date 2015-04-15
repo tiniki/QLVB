@@ -15,8 +15,10 @@ namespace QuanLyVanBan
 		public static readonly string[] loaiVB = { "Công văn", "Chương trình", "Nghị quyết", "Quyết định", "Báo cáo", "Kết luận", "Thông báo", "Tài liệu mật", "Khác" };
 		public static readonly string connectString = string.Format("Server={0};Port={1};Database=document;Uid={2};Pwd=toor;", Properties.Settings.Default.Server, Properties.Settings.Default.Port, Properties.Settings.Default.User);
 		public static DateTime d0 = new DateTime(1, 1, 1);
-		DataSet dataSetVBDen, dataSetVBDi, dataSetKQ;
-		public DateTime vbdenDate, vbdiDate;
+		DataSet dataSetVBDen, dataSetVBDi;
+		internal DataSet dataSetKQ;
+		internal int ketQuaLoaiVB;
+		internal DateTime vbdenDate, vbdiDate;
 		public ManHinhChinh()
 		{
 			InitializeComponent();
@@ -25,7 +27,6 @@ namespace QuanLyVanBan
 			dataSetKQ = new DataSet();
 			loadTreeView(d0, vbDentreeView);
 			loadTreeView(d0, vBDitreeView);
-
 		}
 
 		private void thietLaptoolStripButton_Click(object sender, EventArgs e)
@@ -39,14 +40,14 @@ namespace QuanLyVanBan
 			DialogResult dalRs;
 			if (tabControl1.SelectedTab == vBDebtabPage)
 			{
-				VBDen vbden = new VBDen(false, "");
+				VBDen vbden = new VBDen(false, null);
 				dalRs = vbden.ShowDialog(this);
 				if (dalRs == DialogResult.OK)
 					loadTreeView(vbdenDate, vbDentreeView);
 			}
 			else if (tabControl1.SelectedTab == vBDitabPage)
 			{
-				VBDi vbdi = new VBDi(false, "");
+				VBDi vbdi = new VBDi(false, null);
 				dalRs = vbdi.ShowDialog(this);
 				if (dalRs == DialogResult.OK)
 					loadTreeView(vbdiDate, vBDitreeView);
@@ -81,14 +82,17 @@ namespace QuanLyVanBan
 				reader.Close();
 			}
 			db.close();
-			if (date == d0)
+			if (trv.Nodes.Count > 0)
 			{
-				var nodel1 = trv.Nodes[trv.GetNodeCount(false) - 1];
-				trv.SelectedNode = nodel1.LastNode;
-			}
-			else
-			{
-				trv.SelectedNode = trv.Nodes.Find(date.Year.ToString(), false).First().Nodes.Find(date.Month.ToString(), false).First();
+				if (date == d0)
+				{
+					var nodel1 = trv.Nodes[trv.GetNodeCount(false) - 1];
+					trv.SelectedNode = nodel1.LastNode;
+				}
+				else
+				{
+					trv.SelectedNode = trv.Nodes.Find(date.Year.ToString(), false).First().Nodes.Find(date.Month.ToString(), false).First();
+				}
 			}
 		}
 
@@ -137,18 +141,249 @@ namespace QuanLyVanBan
 			DialogResult dalRs;
 			if (tabControl1.SelectedTab == vBDebtabPage)
 			{
-				VBDen vbden = new VBDen(true, vBDendataGridView.SelectedRows[0].Cells["SoHieu"].Value.ToString());
+				VBDen vbden = new VBDen(true, vBDendataGridView.SelectedRows[0].Cells);
 				dalRs = vbden.ShowDialog(this);
 				if (dalRs == DialogResult.OK)
 					loadTreeView(vbdenDate, vbDentreeView);
 			}
 			else if (tabControl1.SelectedTab == vBDitabPage)
 			{
-				VBDi vbdi = new VBDi(true, vBDidataGridView.SelectedRows[0].Cells["SoHieu"].Value.ToString());
+				VBDi vbdi = new VBDi(true, vBDidataGridView.SelectedRows[0].Cells);
 				dalRs = vbdi.ShowDialog(this);
 				if (dalRs == DialogResult.OK)
 					loadTreeView(vbdiDate, vBDitreeView);
 			}
+			else if (tabControl1.SelectedTab == kQTKtabPage)
+			{
+				if (ketQuaLoaiVB == 1)
+				{
+					VBDen vbden = new VBDen(true, kQTKdataGridView.SelectedRows[0].Cells);
+					if (vbden.ShowDialog(this) == DialogResult.OK)
+					{
+						loadTreeView(vbdenDate, vbDentreeView);
+						tabControl1.SelectedTab = vBDebtabPage;
+					}
+				}
+				else
+				{
+					VBDi vbdi = new VBDi(true, kQTKdataGridView.SelectedRows[0].Cells);
+					if (vbdi.ShowDialog(this) == DialogResult.OK)
+					{
+						loadTreeView(vbdiDate, vBDitreeView);
+						tabControl1.SelectedTab = vBDitabPage;
+					}
+						
+				}
+				dataSetKQ.Clear();
+			}
 		}
+
+		private void ManHinhChinh_Activated(object sender, EventArgs e)
+		{
+			Console.WriteLine("Act");
+			if (tabControl1.SelectedTab == vBDebtabPage)
+				checkButton(vBDendataGridView);
+			else if (tabControl1.SelectedTab == vBDitabPage)
+				checkButton(vBDidataGridView);
+			else checkButton(kQTKdataGridView);
+		}
+
+		private void checkButton(DataGridView dtgrv)
+		{
+			xemtoolStripButton.Enabled = suatoolStripButton1.Enabled = xoatoolStripButton.Enabled = dtgrv.SelectedCells.Count != 0;
+		}
+
+		private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			ManHinhChinh_Activated(this, new EventArgs());
+			timKiemtoolStripButton.Enabled = themtoolStripButton.Enabled = timKiemToolStripMenuItem.Enabled = themToolStripMenuItem.Enabled = thêmToolStripMenuItem.Enabled = tabControl1.SelectedTab  != kQTKtabPage;
+		}
+
+		private void xoatoolStripButton_Click(object sender, EventArgs e)
+		{
+			if (tabControl1.SelectedTab == vBDebtabPage && vBDendataGridView.SelectedRows.Count > 0)
+			{
+
+				if (MessageBox.Show(this, "Bạn có chắc muốn xóa (những) văn bản được chọn không?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+				{
+					xoaVB("vbden", vBDendataGridView.SelectedRows);
+					loadTreeView(d0, vbDentreeView);
+				}
+			}
+			else if (tabControl1.SelectedTab == vBDitabPage && vBDidataGridView.SelectedRows.Count > 0)
+			{
+
+				if (MessageBox.Show(this, "Bạn có chắc muốn xóa (những) văn bản được chọn không?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+				{
+					xoaVB("vbdi", vBDidataGridView.SelectedRows);
+					loadTreeView(d0, vBDitreeView);
+				}
+			}
+			else if (tabControl1.SelectedTab == kQTKtabPage && kQTKdataGridView.SelectedRows.Count > 0)
+			{
+				if (MessageBox.Show(this, "Bạn có chắc muốn xóa (những) văn bản được chọn không?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+				{
+					string m = ketQuaLoaiVB == 1 ? "vbden" : "vbdi";
+					xoaVB(m, kQTKdataGridView.SelectedRows);
+					foreach (DataGridViewRow r in kQTKdataGridView.SelectedRows)
+					{
+						kQTKdataGridView.Rows.Remove(r);
+					}
+					if (ketQuaLoaiVB == 1)
+					{
+						loadTreeView(d0, vbDentreeView);
+					}
+					else
+					{
+						loadTreeView(d0, vBDitreeView);
+					}
+				}
+			}
+		}
+
+		private int xoaVB(string loaiVB, DataGridViewSelectedRowCollection rows)
+		{
+			Class.Database db = new Class.Database();
+			db.connect();
+			foreach (DataGridViewRow r in rows)
+			{
+				MySqlCommand cmd = new MySqlCommand(string.Format("DELETE FROM {0} WHERE SoHieu='{1}';", loaiVB, r.Cells[0].Value.ToString()), db.getConnection());
+				cmd.ExecuteNonQuery();
+				Class.QuanLyTep.xoafile(r.Cells["Tep"].Value.ToString());
+			}
+			db.close();
+			return 1;
+		}
+
+		private void xemtoolStripButton_Click(object sender, EventArgs e)
+		{
+			if (tabControl1.SelectedTab == vBDebtabPage)
+			{
+				ChiTietVBDen chiTietVBDen = new ChiTietVBDen(vBDendataGridView.SelectedRows[0]);
+				chiTietVBDen.ShowDialog(this);
+			}
+			else if (tabControl1.SelectedTab == vBDitabPage)
+			{
+				ChiTietVBDi chiTietVBDi = new ChiTietVBDi(vBDidataGridView.SelectedRows[0]);
+				chiTietVBDi.ShowDialog(this);
+			}
+			else if (tabControl1.SelectedTab == kQTKtabPage)
+			{
+				if (ketQuaLoaiVB == 1)
+				{
+					ChiTietVBDen chiTietVBDen = new ChiTietVBDen(kQTKdataGridView.SelectedRows[0]);
+					chiTietVBDen.ShowDialog(this);
+				}
+				else
+				{
+					ChiTietVBDi chiTietVBDen = new ChiTietVBDi(kQTKdataGridView.SelectedRows[0]);
+					chiTietVBDen.ShowDialog(this);
+				}
+			}
+
+		}
+
+		private void timKiemtoolStripButton_Click(object sender, EventArgs e)
+		{
+			if (tabControl1.SelectedTab == vBDebtabPage)
+			{
+				TimKiem timKiem = new TimKiem(1);
+				if (timKiem.ShowDialog(this) == DialogResult.OK)
+				{
+					ketQuaLoaiVB = 1;
+					tabControl1.SelectedTab = kQTKtabPage;
+					if (((DataTable)kQTKdataGridView.DataSource).Rows.Count == 0)
+						MessageBox.Show(this, "Thông tin  văn bản không tồn tại", "Thông báo", MessageBoxButtons.OK);
+				}
+
+			}
+			else if (tabControl1.SelectedTab == vBDitabPage)
+			{
+				TimKiem timKiem = new TimKiem(2);
+				if (timKiem.ShowDialog(this) == DialogResult.OK)
+				{
+					ketQuaLoaiVB = 2;
+					tabControl1.SelectedTab = kQTKtabPage;
+					if (((DataTable)kQTKdataGridView.DataSource).Rows.Count == 0)
+						MessageBox.Show(this, "Thông tin  văn bản không tồn tại", "Thông báo", MessageBoxButtons.OK);
+				}
+			}
+		}
+
+		private void mởTệpToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (tabControl1.SelectedTab == vBDebtabPage && vBDendataGridView.SelectedRows.Count > 0)
+			{
+				System.Diagnostics.Process.Start(vBDendataGridView.SelectedRows[0].Cells["Tep"].Value.ToString());
+			}
+			else if (tabControl1.SelectedTab == vBDitabPage && vBDidataGridView.SelectedRows.Count > 0)
+			{
+				System.Diagnostics.Process.Start(vBDidataGridView.SelectedRows[0].Cells["Tep"].Value.ToString());
+			}
+			else if (tabControl1.SelectedTab == kQTKtabPage && kQTKdataGridView.SelectedRows.Count > 0)
+			{
+				System.Diagnostics.Process.Start(kQTKdataGridView.SelectedRows[0].Cells["Tep"].Value.ToString());
+			}
+		}
+
+		private void vBDendataGridView_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Right)
+			{
+				vBDendataGridView.ClearSelection();
+				vBDendataGridView.Rows[e.RowIndex].Selected = true;
+				mởTệpToolStripMenuItem.Enabled = vBDendataGridView.SelectedRows[0].Cells["Tep"].Value.ToString() != "";
+				contextMenuStrip1.Show(Cursor.Position);
+
+			}
+		}
+
+		private void vBDidataGridView_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Right)
+			{
+				vBDidataGridView.ClearSelection();
+				vBDidataGridView.Rows[e.RowIndex].Selected = true;
+				mởTệpToolStripMenuItem.Enabled = vBDidataGridView.SelectedRows[0].Cells["Tep"].Value.ToString() != "";
+				contextMenuStrip1.Show(Cursor.Position);
+				
+			}
+		}
+
+		private void kQTKdataGridView_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Right)
+			{
+				kQTKdataGridView.ClearSelection();
+				kQTKdataGridView.Rows[e.RowIndex].Selected = true;
+				mởTệpToolStripMenuItem.Enabled = kQTKdataGridView.SelectedRows[0].Cells["Tep"].Value.ToString() != "";
+				contextMenuStrip1.Show(Cursor.Position);
+			}
+		}
+
+		private void kQTKdataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+		{
+			if (kQTKdataGridView.SelectedRows.Count > 0)
+			{
+				xemtoolStripButton_Click(xemtoolStripButton, null);
+			}
+		}
+
+		private void vBDendataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+		{
+			if (vBDendataGridView.SelectedRows.Count > 0)
+			{
+				xemtoolStripButton_Click(xemtoolStripButton, null);
+			}
+		}
+
+		private void vBDidataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+		{
+			if (kQTKdataGridView.SelectedRows.Count > 0)
+			{
+				xemtoolStripButton_Click(xemtoolStripButton, null);
+			}
+		}
+
 	}
 }
